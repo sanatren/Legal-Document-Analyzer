@@ -23,6 +23,7 @@ text = "Your long legal document here..."
 summary = summarizer(text)
 
 print(summary)
+```
 
 ## 🗂️ Dataset
 The project uses a comprehensive legal document dataset from Zenodo (https://zenodo.org/records/7152317), containing:
