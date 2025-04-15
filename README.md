@@ -1,17 +1,17 @@
 # Legal Document Analyzer 📚⚖️
-Project Overview
-This Legal Document Analyzer is a proof-of-concept NLP project demonstrating the potential of transformers for legal document summarization. While the full vision requires extensive computational resources, this implementation serves as a foundational exploration of applying advanced machine learning techniques to legal text processing.
+
+## Project Overview
+This Legal Document Analyzer is an NLP project demonstrating the application of transformer models for legal document summarization. The project implements two approaches: (1) a fine-tuned BART-based model and (2) a proof-of-concept custom transformer architecture.
 
 ## 🤗 Hugging Face Hosted Model
 
-Check out the model on Hugging Face: [sanatann/legal-summarizer-bart](https://huggingface.co/sanatann/legal-summarizer-bart)
+The fine-tuned model is available on Hugging Face: [sanatann/legal-summarizer-bart](https://huggingface.co/sanatann/legal-summarizer-bart)
 
 ---
 
-
 ## 🚀 Demo
 
-You can directly test the model using the following code:
+You can directly use the fine-tuned model with the following code:
 
 ```python
 from transformers import pipeline
@@ -28,102 +28,91 @@ print(summary)
 ## 🗂️ Dataset
 The project uses a comprehensive legal document dataset from Zenodo (https://zenodo.org/records/7152317), containing:
 
-Indian Legal Abstracts (IN-Abs)
-Indian Legal Extendeds (IN-Ext)
-UK Legal Abstracts (UK-Abs)
+- Indian Legal Abstracts (IN-Abs)
+- Indian Legal Extendeds (IN-Ext)
+- UK Legal Abstracts (UK-Abs)
 
-## Project Limitations and Challenges
-Computational Constraints
+## Implementation Approaches
 
-Training Sequence Limit: Trained on approximately 592,000 sequences
-Resource Limitations: Incomplete full-scale training due to computational restrictions
-Performance Caveat: Current model does not represent state-of-the-art performance
+### 1. Fine-tuned Model Approach (Primary Implementation)
 
-Scaling Requirements
+The primary implementation uses a fine-tuned model based on the BART architecture:
 
-State-of-the-art transformer models typically require:
+- **Base Model**: facebook/bart-large-cnn
+- **Fine-tuning Process**: The model was fine-tuned on the legal documents dataset using Hugging Face's Transformers library
+- **Training Infrastructure**: A100 GPU
+- **Training Parameters**: 
+  - 4 epochs
+  - Learning rate: 2e-5
+  - Batch size: 16
+  - Gradient accumulation steps: 2
 
-Millions to billions of training sequences
-Massive GPU/TPU computational power
-Extensive fine-tuning
+This approach yielded better results than the from-scratch implementation due to:
+- Leveraging pre-trained language knowledge
+- Computational efficiency through transfer learning
+- Better handling of legal terminology and complex sentence structures
 
+The fine-tuned model was further enhanced with a PPO-based reinforcement learning approach to optimize for ROUGE and BLEU scores.
 
+### 2. Custom Transformer Architecture (Proof of Concept)
+
+The custom transformer implementation provided a valuable learning experience and exploration of the architecture:
+
+- **Architecture Components**:
+  - Multi-Head Attention mechanism
+  - Positional Encoding
+  - Encoder-Decoder structure
+  - Layer Normalization
+  - Feed-Forward Networks
+
+- **Tokenization**:
+  - Byte Pair Encoding (BPE)
+  - Vocabulary size of 50,000 tokens
+
+While theoretically sound, this approach faced significant challenges:
+- Limited by computational resources despite using A100 GPUs
+- Insufficient training data for a from-scratch transformer
+- Legal text complexity requiring deeper contextual understanding
+
+## Why Fine-tuning Was Preferred
+
+Despite having access to A100 GPUs, we opted for the fine-tuned approach because:
+
+1. **Computational Efficiency**: Training transformers from scratch requires enormous computational resources and time, even with high-end GPUs
+2. **Data Constraints**: Legal documents are specialized and not as abundant as general text corpora
+3. **Transfer Learning Benefits**: Pre-trained models already understand language structure, allowing us to focus on domain adaptation
+4. **Performance**: Fine-tuned models demonstrate significantly better performance on specialized tasks with limited datasets
 
 ## Project Achievements
-Despite computational limitations, the project successfully demonstrated:
 
-Custom transformer architecture implementation
-Legal document preprocessing pipeline
-Basic sequence-to-sequence learning approach
-Tokenization strategy for legal text
+The project successfully delivered:
 
-## Technical Architecture Prototype
+1. A working legal document summarizer based on fine-tuned BART
+2. A proof-of-concept custom transformer implementation
+3. An RL-enhanced model using PPO to optimize summary quality
+4. A complete legal text preprocessing pipeline
+5. Integration with Hugging Face for easy model access
 
-Custom Transformer Components:
+## Performance and Limitations
 
-Multi-Head Attention mechanism
-Positional Encoding
-Encoder-Decoder structure
-Layer Normalization
-
-
-## Tokenization:
-
-Byte Pair Encoding (BPE)
-Vocabulary size targeted at 50,000 tokens
-
-## Potential Future Development
-To transform this prototype into a production-ready solution, consider:
-
-Securing high-performance computational resources
-Partnering with research institutions
-Utilizing cloud computing platforms
-Exploring pre-trained model fine-tuning strategies
-
-## Recommended Next Steps
-
-Computational Scaling
-
-Access to high-performance computing clusters
-Cloud GPU instances (AWS, GCP, Azure)
-Research computing resources
+- The fine-tuned model achieves competitive performance on legal summarization tasks
+- The model performs best on texts similar to its training data (Indian and UK legal documents)
+- Custom transformer implementation demonstrated the challenges in training large language models from scratch
+- Current limitation: Processing extremely long legal documents requires chunking strategies
 
 
-## Dataset Enhancement
+## Technical Requirements
 
-Augment current dataset
-Incorporate additional legal document collections
-Potentially use transfer learning techniques
+### Dependencies
 
-## Model Optimization
+- PyTorch
+- Transformers
+- Tokenizers
+- NLTK
+- RougeScore
+- SacreBLEU
+- Stable-Baselines3 (for RL optimization)
 
-Explore efficient transformer architectures
-Investigate model compression techniques
-Consider knowledge distillation approaches
+## Conclusion
 
-## Current Prototype Setup
-Dependencies
-
-PyTorch
-Transformers
-Tokenizers
-NLTK
-
-## Limitations Disclaimer
-This implementation is a research prototype and should not be considered a production-ready legal summarization tool. The model's performance is significantly constrained by:
-
-Limited training sequences
-Insufficient computational resources
-Incomplete model convergence
-
-## Learning Objectives
-The primary goals of this project were to:
-
-Understand transformer architecture
-Explore legal text preprocessing
-Prototype sequence-to-sequence learning
-Highlight computational challenges in NLP
-
-## Collaboration Invitation
-Researchers and practitioners with access to advanced computational resources are invited to build upon this foundational work.
-
+This project demonstrates both the practical approach (fine-tuning) and theoretical exploration (custom implementation) of transformer models for legal document analysis. While the fine-tuned approach proved more effective given resource constraints, the custom implementation provided valuable insights into transformer architecture and the challenges of training language models from scratch.
