@@ -2,6 +2,28 @@
 Project Overview
 This Legal Document Analyzer is a proof-of-concept NLP project demonstrating the potential of transformers for legal document summarization. While the full vision requires extensive computational resources, this implementation serves as a foundational exploration of applying advanced machine learning techniques to legal text processing.
 
+## 🤗 Hugging Face Hosted Model
+
+Check out the model on Hugging Face: [sanatann/legal-summarizer-bart](https://huggingface.co/sanatann/legal-summarizer-bart)
+
+---
+
+
+## 🚀 Demo
+
+You can directly test the model using the following code:
+
+```python
+from transformers import pipeline
+
+summarizer = pipeline("summarization", model="sanatann/legal-summarizer-bart")
+
+text = "Your long legal document here..."
+
+summary = summarizer(text)
+
+print(summary)
+
 ## 🗂️ Dataset
 The project uses a comprehensive legal document dataset from Zenodo (https://zenodo.org/records/7152317), containing:
 
